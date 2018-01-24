@@ -1,0 +1,17 @@
+---
+applications:
+  - name: abhishek-app
+    memory: 64M
+    buildpack: nodejs_buildpack
+    command: node server/app.js
+    path: dist
+services:
+  - synclab-adbp-uaa
+ # - your-timeseries-instance
+  - synclab-adbp-asset
+env:
+    node_env: production
+    uaa_service_label : predix-uaa
+    # Add these values for authentication in the cloud
+    base64ClientCredential: c3luY2xhYi1hZGJwLWNsaWVudDpzZWNyZXQ=
+    loginBase64ClientCredential: c3luY2xhYi1hZGJwLWNsaWVudDpzZWNyZXQ=

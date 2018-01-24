@@ -1,0 +1,27 @@
+{
+  "name": "react-seed",
+  "authors": [
+    "Abhishek Dhaduvai <abhishek.dhaduvai1@gmail.com>"
+  ],
+  "dependencies": {
+    "px-app-nav": "^2.1.2",
+    "px-spinner": "^2.2.1",
+    "px-branding-bar": "^1.1.1",
+    "px-login": "^2.2.8",
+    "px-key-value-pair": "^1.2.2",
+    "px-card": "^2.0.2",
+    "px-data-table": "^5.1.10",
+    "px-gauge": "^2.2.0",
+    "px-simple-horizontal-bar-chart": "^1.1.0",
+    "px-file-upload": "^1.2.0",
+    "px-overlay": "^1.1.1",
+    "px-modal": "https://github.com/PredixDev/px-modal.git#^3.1.2"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^v1.0.19"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "px-starter-kit-design": "^1.0.2"
+  }
+}
