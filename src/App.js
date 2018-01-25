@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
 import AppNav from './components/AppNav';
-import AsyncDashboard from './components/AsyncDashboard';
-import SyncDashboard from './components/SyncDashboard';
+import Dashboard1 from './components/Dashboard1';
+import Dashboard2 from './components/Dashboard2';
 import axios from 'axios';
 
 class App extends Component {
@@ -33,10 +33,10 @@ class App extends Component {
         </div> */}
 
         <Switch>
-          <Route exact path="/async" component={AsyncDashboard} />
-          <Route exact path="/sync" component={SyncDashboard} />
+          <Route exact path="/dashboard1" component={Dashboard1} />
+          <Route exact path="/dashboard2" component={Dashboard2} />
           <Route path="/" render={() => {
-            return <Redirect to="/async" />
+            return <Redirect to="/dashboard1" />
           }}/>
         </Switch>
       </div>

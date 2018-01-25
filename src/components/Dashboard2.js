@@ -3,7 +3,7 @@ import Card from './Card';
 import axios from 'axios';
 // import 'bootstrap/dist/css/bootstrap.css';
 
-class SyncDashboard extends React.Component {
+class Dashboard2 extends React.Component {
 
   state = {
     loading: false,
@@ -96,4 +96,4 @@ class SyncDashboard extends React.Component {
   }
 }
 
-export default SyncDashboard;
+export default Dashboard2;
