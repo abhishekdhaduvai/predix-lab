@@ -10,7 +10,6 @@ class Map extends Component {
 
   render() {
     const { markers } = this.props;
-    console.log(markers)
     return (
       <GoogleMapReact
         center={{ lat: 39.827792, lng: -98.579304 }}
