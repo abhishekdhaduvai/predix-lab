@@ -28,9 +28,9 @@ class App extends Component {
         <px-branding-bar />
 
         {/* AppNav */}
-        <div style={{display: 'flex'}}>
+        {/* <div style={{display: 'flex'}}>
           <AppNav items={navItems}/>
-        </div>
+        </div> */}
 
         <Switch>
           <Route exact path="/async" component={AsyncDashboard} />
