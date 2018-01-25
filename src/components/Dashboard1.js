@@ -122,7 +122,7 @@ class Dashboard1 extends React.Component {
       <div>
         {/* Context */}
         <div className='flex view-heading'>
-          <h1>Predix Asynchronous Example</h1>
+          <h1>Predix Example</h1>
         </div>
 
         <RaisedButton
