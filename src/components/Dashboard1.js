@@ -16,30 +16,39 @@ class Dashboard1 extends React.Component {
     modalOpen: false,
     connectedCars: [],
     locations: [],
-    selectedCar: {},
+    selectedCar: undefined,
+    interval: undefined,
   }
 
-  clearState = () => {
+  clearModal = () => {
     this.setState({
-      selectedCar: undefined
+      modalOpen: false,
+      selectedCar: undefined,
     })
+    clearInterval(this.state.interval)
   }
 
   setCurrentId = (id) => {
     this.setState({
       modalOpen: true, 
-      loadingText:'Getting Car Details...'
-    })
+      loadingText:'Getting Car Details...',
+    });
+
     axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
     .then(cars => {
       let selectedCar = cars.data.filter(car => car.id === id.slice(15).toUpperCase())[0];
-      this.setState({selectedCar})
+      this.setState({
+        selectedCar,
+        selectedCarId: id,
+      })
+    })
+    .then(()=>{
+      this.setState({interval: setInterval(this.getCurrentInfo,2000)})
     })
   }
 
   getCurrentInfo = () => {
     const id = this.state.selectedCarId;
-    this.setState({modalOpen: true})
     axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
     .then(cars => {
       let selectedCar = cars.data.filter(car => car.id === id.slice(15).toUpperCase())[0];
@@ -112,12 +121,9 @@ class Dashboard1 extends React.Component {
       <FlatButton
         label='Close'
         primary={true}
-        onClick={()=>this.setState({modalOpen: false})}
+        onClick={()=>this.clearModal()}
       />,
     ];
-    if(!this.state.modalOpen && selectedCar){
-      this.clearState();
-    }
     return (
       <div>
         {/* Context */}
@@ -155,7 +161,7 @@ class Dashboard1 extends React.Component {
           actions={actions}
           modal={false}
           open={this.state.modalOpen}
-          onRequestClose={()=>this.setState({modalOpen: false})}>
+          onRequestClose={()=>this.clearModal()}>
           {!selectedCar && 
             <div className = 'spinner'>
               <div style={{flex: 1, alignSelf:'center'}}>

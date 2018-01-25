@@ -23,6 +23,7 @@ class App extends Component {
 
   render() {
     const { navItems } = this.state;
+    console.log('https://github.com/facebook/react/issues/7325')
     return (
       <div className="App">
         <px-branding-bar />
