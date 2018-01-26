@@ -154,7 +154,7 @@ class Dashboard1 extends React.Component {
           <px-alert-message
             visible
             type='important'
-            action='dismiss'
+            action='acknowledge'
             message-title='Error!'
             message='There was an error. Check the console.'
             auto-dismiss='0'>
