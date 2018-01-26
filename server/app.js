@@ -108,7 +108,6 @@ if (!config.isUaaConfigured()) {
     passport.authenticate('main', {
       noredirect: true
     }),
-    proxy.addClientTokenMiddleware,
     proxy.customProxyMiddleware('/simulator-url', simulatorURL)
   );
   

@@ -5,7 +5,6 @@ import Map from './Map';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import { setTimeout } from 'timers';
 
 class Dashboard1 extends React.Component {
 
@@ -197,7 +196,7 @@ class Dashboard1 extends React.Component {
           }
           {selectedCar && Object.keys(selectedCar).length !== 0 && 
             <div>
-              <div class='px-gauge-0'>
+              <div className='px-gauge-0'>
                 <px-gauge
                   value={selectedCar.speed}
                   min='0'
