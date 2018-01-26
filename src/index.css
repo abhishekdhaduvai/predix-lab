@@ -5,17 +5,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
   background: #24343e;
-}
-
-h1 {
-  color: #b6c3cd;
-  font-family: 'PT Sans';
-}
-
-a {
-  text-decoration: none;
 }
 
 .flex {
@@ -23,127 +13,30 @@ a {
   flex-wrap: wrap;
 }
 
-.context {
-  flex-direction: column;
-}
-
-px-app-nav, px-app-nav-item, px-app-nav-subitem {
-  background: #0c1419 !important;
-}
-
-px-app-nav-item:hover, px-app-nav-subitem:hover, .px-app-nav-item-0[selected] {
-  background: #1c2a34 !important;
-}
-
-.px-app-nav-item-0[selected]:before {
-  background-color: #09819c;
-}
-
 .view-heading {
   justify-content: space-between;
   margin-top: 1em;
   margin-left: 1em;
-}
-
-.px-dropdown-0 .dropdown-trigger.px-dropdown {
-  background: #425765 !important;
-  border: none;
-}
-
-.kpis {
-  padding: 1em 1em;
-  padding-right: 15em;
-  margin-left: 1em;
-}
-
-.value {
-  color: #b6c3cd !important;
-}
-
-.px-card-0{
-  width: inherit;
-}
-
-px-card, Card {
-  flex: 1;
-  margin: 1em;
-  background: #ebeff2;
-  /* color: #768c99; */
-}
-
-.description {
-  padding-bottom: 1em;
+  color: #b6c3cd;
+  font-family: 'PT Sans';
 }
 
 .container {
   margin: 0 1em;
 }
 
-.center {
-  text-align: center;
-}
-
-.table {
-  color: #2d404b;
-  width: 100%;
-  max-width: 100%;
-  border-spacing: 0;
-  border-collapse: collapse;
-  white-space: normal;
-  line-height: normal;
-  font-weight: normal;
-  font-size: medium;
-  font-style: normal;
-  font-variant: normal;
-  display: table;
-}
-
-.table-bordered {
-  border: 1px solid #ddd;
-}
-
-.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  line-height: 1.42857143;
-  vertical-align: top;
-}
-
-.table, .table th {
-  text-align: center;
-  margin-bottom: 0px;
-}
-
-.px-simple-horizontal-bar-chart-0 .px-simple-horizontal-bar-chart-svg.px-simple-horizontal-bar-chart, .px-dropdown-0 .dropdown-trigger.px-dropdown {
-  background: #ebeff2 !important;
-}
-
 .px-gauge-0 {
   float: left;
   width: 20em;
   display: table-cell;
-}
-
-.px-gauge-0 #chart.px-gauge {
   height: 11em;
+  margin-bottom: 10em;
+  margin-right: 2em;
 }
 
 .kpi {
   margin-left: 0em;
   width: 100%;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.speed {
-  background: white;
-}
-
-.px-overlay-0 #overlay.px-overlay {
-  background: #ffffff;
-  opacity: 0.8;  
 }
 
 .spinner {
@@ -159,17 +52,7 @@ px-card, Card {
   display: flex;
 }
 
-.px-key-value-pair-0 {
-  display: inline-flex;
-  flex-direction: column;
-  margin: 1em;
-}
-
-.px-key-value-pair-0 .kvp-value--gamma.px-key-value-pair, .px-key-value-pair-0 .kvp-uom--gamma.px-key-value-pair {
-  color: #424242;
-}
-
-#alert {
+px-alert-message {
   z-index: 2;
   float: right;
   margin-right: 1em;

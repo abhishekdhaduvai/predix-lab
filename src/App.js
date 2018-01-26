@@ -6,7 +6,6 @@ import axios from 'axios';
 class App extends Component {
 
   render() {
-    console.log('https://github.com/facebook/react/issues/7325')
     return (
       <div className='App'>
         <px-branding-bar />

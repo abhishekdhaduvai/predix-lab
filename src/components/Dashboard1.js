@@ -58,51 +58,51 @@ class Dashboard1 extends React.Component {
   /*
    * Synchronous Call 
    */
-  getData = () => {
-    this.setState({
-      loading: true,
-      loadingText: 'Getting Cars...'
-    });
-    axios.get('/api/predix-asset/connected_car')
-    .then(res => {
-      this.setState({
-        connectedCars: res.data,
-        loadingText: 'Locating Cars...'
-      });
-      return res.data;
-    })
-    .then(cars => {
-      axios.get('/api/predix-asset/location')
-      .then(locations => {
-        this.combineResponses(cars, locations.data)
-      })
-    })
-  }
-
-  /*
-   * Asynchronous Call
-   */
   // getData = () => {
   //   this.setState({
   //     loading: true,
   //     loadingText: 'Getting Cars...'
   //   });
-
   //   axios.get('/api/predix-asset/connected_car')
   //   .then(res => {
-  //     this.setState({connectedCars: res.data});
+  //     this.setState({
+  //       connectedCars: res.data,
+  //       loadingText: 'Locating Cars...'
+  //     });
   //     return res.data;
-  //   });
-
-  //   this.setState({loadingText: 'Locating Cars...'});
-
-  //   axios.get('/api/predix-asset/location')
-  //   .then(locations => {
-  //     this.setState({locations: locations.data})
-  //   });
-
-  //   this.combineResponses(this.state.connectedCars, this.state.locations)
+  //   })
+  //   .then(cars => {
+  //     axios.get('/api/predix-asset/location')
+  //     .then(locations => {
+  //       this.combineResponses(cars, locations.data)
+  //     })
+  //   })
   // }
+
+  /*
+   * Asynchronous Call
+   */
+  getData = () => {
+    this.setState({
+      loading: true,
+      loadingText: 'Getting Cars...'
+    });
+
+    axios.get('/api/predix-asset/connected_car')
+    .then(res => {
+      this.setState({connectedCars: res.data});
+      return res.data;
+    });
+
+    this.setState({loadingText: 'Locating Cars...'});
+
+    axios.get('/api/predix-asset/location')
+    .then(locations => {
+      this.setState({locations: locations.data})
+    });
+
+    this.combineResponses(this.state.connectedCars, this.state.locations)
+  }
 
   combineResponses = (cars, locations) => {
     console.log("CARS: ", cars);
@@ -196,44 +196,46 @@ class Dashboard1 extends React.Component {
             </div>
           }
           {selectedCar && Object.keys(selectedCar).length !== 0 && 
-            <div className='kpi'>
-              <px-gauge
-                value={selectedCar.speed}
-                min='0'
-                max='200'
-                bar-width='0'
-                unit='MPH'
-                error='[[0,12],[79,100]]'
-                abnormal='[[12,32],[68,79]]'
-                anomaly='[[32,45],[54,68]]'
-                normal='[[45,54]]'>
-              </px-gauge>
-                <KeyValue 
-                  valueKey='Car Make' 
-                  value={selectedCar.name.split(' ')[0]} 
-                  size={'gamma'}/>
-
-                <KeyValue 
-                  valueKey='Car Model' 
-                  value={selectedCar.name.split(' ')[1]} 
-                  size={'gamma'}/>
-
-                <KeyValue 
-                  valueKey='Engine Temperature' 
-                  value={selectedCar.engineTemp} 
-                  uom={'F'}
-                  size={'gamma'}/>
-
-                <KeyValue 
-                valueKey='Odometer' 
-                value={selectedCar.odometerReading} 
-                uom={'Miles'}
+            <div>
+              <div class='px-gauge-0'>
+                <px-gauge
+                  value={selectedCar.speed}
+                  min='0'
+                  max='200'
+                  bar-width='0'
+                  unit='MPH'
+                  error='[[0,12],[79,100]]'
+                  abnormal='[[12,32],[68,79]]'
+                  anomaly='[[32,45],[54,68]]'
+                  normal='[[45,54]]'>
+                </px-gauge>
+              </div>
+              <KeyValue 
+                valueKey='Car Make' 
+                value={selectedCar.name.split(' ')[0]} 
                 size={'gamma'}/>
 
-                <KeyValue 
-                  valueKey='Gas Cap' 
-                  value={selectedCar.parkingBrakeStatus === 1 ? 'Open' : 'Closed'} 
-                  size={'gamma'}/>
+              <KeyValue 
+                valueKey='Car Model' 
+                value={selectedCar.name.split(' ')[1]} 
+                size={'gamma'}/>
+
+              <KeyValue 
+                valueKey='Engine Temperature' 
+                value={selectedCar.engineTemp} 
+                uom={'F'}
+                size={'gamma'}/>
+
+              <KeyValue 
+              valueKey='Odometer' 
+              value={selectedCar.odometerReading} 
+              uom={'Miles'}
+              size={'gamma'}/>
+
+              <KeyValue 
+                valueKey='Gas Cap' 
+                value={selectedCar.parkingBrakeStatus === 1 ? 'Open' : 'Closed'} 
+                size={'gamma'}/>
             </div>
           }
         </Dialog>
