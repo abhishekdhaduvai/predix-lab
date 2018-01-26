@@ -6,12 +6,7 @@ npm install bower -g
 npm install gulp -g
 ```
 
-Change directory to seed-applications, checkout the react branch
-
-```
-git checkout react
-```
-and run the following commands.
+cd into the repo and run the following commands.
 ```
 npm install
 bower install
