@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser'); // used for session cookie
 var bodyParser = require('body-parser');
 var passport;  // only used if you have configured properties for UAA
 var session = require('express-session');
-var proxy = require('./routes/proxy'); // used when requesting data from real services.
+var proxy = require('./proxy'); // used when requesting data from real services.
 // get config settings from local file or VCAPS env var in the cloud
 var config = require('./predix-config');
 // configure passport for authentication with UAA
@@ -16,7 +16,6 @@ var userInfo = require('./routes/user-info');
 var app = express();
 var httpServer = http.createServer(app);
 var axios = require('axios');
-var dataExchange = require('./routes/data-exchange');
 
 /**********************************************************************
        SETTING UP EXRESS SERVER
@@ -103,6 +102,16 @@ if (!config.isUaaConfigured()) {
   	}),
     proxy.router);
 
+  var simulatorURL = devConfig ? devConfig.simulatorURL : process.env.simulatorURL;
+
+  app.use('/simulator-url',
+    passport.authenticate('main', {
+      noredirect: true
+    }),
+    proxy.addClientTokenMiddleware,
+    proxy.customProxyMiddleware('/simulator-url', simulatorURL)
+  );
+  
   //callback route redirects to secure route after login
   app.get('/callback', passport.authenticate('predix', {
   	failureRedirect: '/'
@@ -110,19 +119,6 @@ if (!config.isUaaConfigured()) {
   	console.log('Redirecting to secure route...');
   	res.redirect('/');
   });
-
-  if (config.rmdDatasourceURL && config.rmdDatasourceURL.indexOf('https') === 0) {
-    app.get('/api/datagrid/*', 
-        proxy.addClientTokenMiddleware, 
-        proxy.customProxyMiddleware('/api/datagrid', config.rmdDatasourceURL, '/services/experience/datasource/datagrid'));
-  }
-
-  if (config.dataExchangeURL && config.dataExchangeURL.indexOf('https') === 0) {
-    app.post('/api/cloneasset', proxy.addClientTokenMiddleware, dataExchange.cloneAsset);
-
-    app.post('/api/updateasset', proxy.addClientTokenMiddleware, 
-        proxy.customProxyMiddleware('/api/updateasset', config.dataExchangeURL, '/services/fdhrouter/fielddatahandler/putfielddata'));
-  }
 
   //Use this route to make the entire app secure.  This forces login for any path in the entire app.
   app.use('/', passport.authenticate('main', {
@@ -133,19 +129,6 @@ if (!config.isUaaConfigured()) {
 
 }
 
-/*******************************************************
-SET UP MOCK API ROUTES
-*******************************************************/
-var mockAssetRoutes = require('./routes/mock-asset.js')();
-var mockTimeSeriesRouter = require('./routes/mock-time-series.js');
-var mockRmdDatasourceRoutes = require('./routes/mock-rmd-datasource.js')();
-// add mock API routes.  (Remove these before deploying to production.)
-app.use(['/mock-api/predix-asset', '/api/predix-asset'], jsonServer.router(mockAssetRoutes));
-app.use(['/mock-api/predix-timeseries', '/api/predix-timeseries'], mockTimeSeriesRouter);
-app.use(['/mock-api/datagrid', '/api/datagrid'], jsonServer.router(mockRmdDatasourceRoutes));
-require('./routes/mock-live-data.js')(httpServer);
-// ***** END MOCK ROUTES *****
-
 //logout route
 app.get('/logout', function(req, res) {
 	req.session.destroy();
@@ -153,56 +136,6 @@ app.get('/logout', function(req, res) {
   passportConfig.reset(); //reset auth tokens
   res.redirect(config.uaaURL + '/logout?redirect=' + config.appURL);
 });
-
-const CarsAPI = devConfig ? devConfig.CarsAPI : process.env.CarsAPI;
-
-app.get('/cars/speed', function(req, res) {
-  axios.get(CarsAPI+'/cars/simulator')
-  .then(response => {
-    let speeds = [];
-    response.data.forEach(val => {
-      speeds.push({
-        id: val.id, 
-        name: val.name,
-        timestamp: val.currentTime,
-        speed: val.speed
-      })
-    })
-    setTimeout(()=>{res.send(speeds)}, 1000)
-  })
-})
-
-app.get('/cars/engineTemp', function(req, res) {
-  axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
-  .then(response => {
-    let engineTemps = [];
-    response.data.forEach(val => {
-      engineTemps.push({
-        id: val.id, 
-        name: val.name,
-        timestamp: val.currentTime,
-        engineTemp: val.engineTemp
-      })
-    })
-    setTimeout(()=>{res.send(engineTemps)}, 1000)
-  })
-})
-
-app.get('/cars/odometer', function(req, res) {
-  axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
-  .then(response => {
-    let odometerReadings = [];
-    response.data.forEach(val => {
-      odometerReadings.push({
-        id: val.id, 
-        name: val.name,
-        timestamp: val.currentTime,
-        odometerReading: val.odometerReading
-      })
-    })
-    res.send(odometerReadings)
-  })
-})
 
 ////// error handlers //////
 // catch 404 and forward to error handler

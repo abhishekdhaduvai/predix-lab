@@ -168,3 +168,10 @@ px-card, Card {
 .px-key-value-pair-0 .kvp-value--gamma.px-key-value-pair, .px-key-value-pair-0 .kvp-uom--gamma.px-key-value-pair {
   color: #424242;
 }
+
+#alert {
+  z-index: 2;
+  float: right;
+  margin-right: 1em;
+  margin-top: -5em;
+}

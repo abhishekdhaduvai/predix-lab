@@ -5,7 +5,7 @@ export default class Marker extends Component {
 
   render() {
     return (
-      <div style={{color:'red'}}>
+      <div style={{color:'red', cursor: 'pointer'}}>
         <FaAutomobile size={25}/>
       </div>
     );

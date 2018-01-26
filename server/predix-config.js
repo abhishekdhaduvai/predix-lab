@@ -11,7 +11,6 @@ var node_env = process.env.node_env || 'development';
 if(node_env === 'development') {
   // use localConfig file
 	var devConfig = require('./localConfig.json')[node_env];
-	// console.log(devConfig);
 	settings.base64ClientCredential = devConfig.base64ClientCredential;
 	settings.loginBase64ClientCredential = devConfig.loginBase64ClientCredential;
 	settings.uaaURL = devConfig.uaaURL;
@@ -24,8 +23,6 @@ if(node_env === 'development') {
 	settings.timeseriesZoneId = devConfig.timeseriesZoneId;
 	settings.timeseriesURL = devConfig.timeseriesURL;
 	settings.websocketServerURL = devConfig.websocketServerURL;
-	settings.rmdDatasourceURL = devConfig.rmdDatasourceURL;
-	settings.rmdDocsURL = devConfig.rmdDocsURL;
 	settings.dataExchangeURL = devConfig.dataExchangeURL;
 
 } else {
@@ -36,7 +33,7 @@ if(node_env === 'development') {
 	var timeseriesService = vcapsServices['predix-timeseries'];
 
 	if(uaaService) {
-    	settings.uaaURL = uaaService[0].credentials.uri;
+		settings.uaaURL = uaaService[0].credentials.uri;
 		settings.tokenURL = uaaService[0].credentials.uri;
 	}
 	if(assetService) {
@@ -55,16 +52,12 @@ if(node_env === 'development') {
 	settings.base64ClientCredential = process.env.base64ClientCredential;
 	settings.loginBase64ClientCredential = process.env.loginBase64ClientCredential;
 	settings.websocketServerURL = process.env.websocketServerURL;
-	settings.rmdDatasourceURL = process.env.rmdDatasourceURL;
-	settings.rmdDocsURL = process.env.rmdDocsURL;
 	settings.dataExchangeURL = process.env.dataExchangeURL;
 }
-// console.log('config settings: ' + JSON.stringify(settings));
 
 // This vcap object is used by the proxy module.
 settings.buildVcapObjectFromLocalConfig = function(config) {
 	'use strict';
-	// console.log('local config: ' + JSON.stringify(config));
 	var vcapObj = {};
 	if (config.uaaURL) {
 		vcapObj['predix-uaa'] = [{
@@ -105,31 +98,31 @@ settings.isUaaConfigured = function() {
 	settings.loginBase64ClientCredential.indexOf('client') < 0;
 };
 
-settings.isAssetConfigured = function() {
-	return settings.assetURL &&
-	settings.assetURL.indexOf('https') === 0 &&
-	settings.assetZoneId &&
-	settings.assetZoneId.indexOf('{') !== 0;
-}
+// settings.isAssetConfigured = function() {
+// 	return settings.assetURL &&
+// 	settings.assetURL.indexOf('https') === 0 &&
+// 	settings.assetZoneId &&
+// 	settings.assetZoneId.indexOf('{') !== 0;
+// }
 
-settings.isTimeSeriesConfigured = function() {
-	return settings.timeseriesURL && 
-	settings.timeseriesURL.indexOf('https') === 0 &&
-	settings.timeseriesZoneId &&
-	settings.timeseriesZoneId.indexOf('{') !== 0;
-}
+// settings.isTimeSeriesConfigured = function() {
+// 	return settings.timeseriesURL && 
+// 	settings.timeseriesURL.indexOf('https') === 0 &&
+// 	settings.timeseriesZoneId &&
+// 	settings.timeseriesZoneId.indexOf('{') !== 0;
+// }
 
-settings.isDataExchangeConfigured = function() {
-	return settings.dataExchangeURL && 
-	settings.dataExchangeURL.indexOf('https') === 0;
-}
+// settings.isDataExchangeConfigured = function() {
+// 	return settings.dataExchangeURL && 
+// 	settings.dataExchangeURL.indexOf('https') === 0;
+// }
 
 function getValueFromEncodedString(encoded, index) {
 	if (!encoded) {
 		return '';
 	}
 	var decoded = new Buffer(encoded, 'base64').toString();
-	// console.log('DECODED:  ' + decoded);
+
 	var values = decoded.split(':');
 	if (values.length !== 2) {
 		throw "base64 encoded client credential is not correct. \n It should be the base64 encoded value of: 'client:secret' \n Set in localConfig.json for local dev, or environment variable in the cloud.";

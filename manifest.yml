@@ -1,7 +1,7 @@
 ---
 applications:
-  - name: abhishek-app
-    memory: 64M
+  - name: connectedcars-ui
+    memory: 1G
     buildpack: nodejs_buildpack
     command: node server/app.js
     path: dist
@@ -15,3 +15,4 @@ env:
     # Add these values for authentication in the cloud
     base64ClientCredential: c3luY2xhYi1hZGJwLWNsaWVudDpzZWNyZXQ=
     loginBase64ClientCredential: c3luY2xhYi1hZGJwLWNsaWVudDpzZWNyZXQ=
+    simulatorURL: https://connectedcars-simulator.run.aws-usw02-pr.ice.predix.io

@@ -8,6 +8,6 @@
     "timeseriesZoneId": "{The Zone ID for the Timeseries Service Created}",
     "assetURL": "https://predix-asset.run.aws-usw02-pr.ice.predix.io",
     "assetZoneId": "789fb95c-c807-4fda-b218-6c27ab475281",
-    "CarsAPI": "https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io"
+    "simulatorURL": "https://connectedcars-simulator.run.aws-usw02-pr.ice.predix.io"
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import Card from './Card';
 import axios from 'axios';
 import KeyValue from './KeyValue';
 import Map from './Map';
@@ -18,6 +17,7 @@ class Dashboard1 extends React.Component {
     locations: [],
     selectedCar: undefined,
     interval: undefined,
+    error: false
   }
 
   clearModal = () => {
@@ -33,8 +33,7 @@ class Dashboard1 extends React.Component {
       modalOpen: true, 
       loadingText:'Getting Car Details...',
     });
-
-    axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
+    axios.get('/simulator-url/cars/simulator')
     .then(cars => {
       let selectedCar = cars.data.filter(car => car.id === id.slice(15).toUpperCase())[0];
       this.setState({
@@ -49,13 +48,16 @@ class Dashboard1 extends React.Component {
 
   getCurrentInfo = () => {
     const id = this.state.selectedCarId;
-    axios.get('https://studentxx-connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
+    axios.get('https://connectedcars-simulator.run.aws-usw02-pr.ice.predix.io/cars/simulator')
     .then(cars => {
       let selectedCar = cars.data.filter(car => car.id === id.slice(15).toUpperCase())[0];
       this.setState({selectedCar})
     })
   }
 
+  /*
+   * Synchronous Call 
+   */
   getData = () => {
     this.setState({
       loading: true,
@@ -77,25 +79,37 @@ class Dashboard1 extends React.Component {
     })
   }
 
+  /*
+   * Asynchronous Call
+   */
   // getData = () => {
   //   this.setState({
   //     loading: true,
   //     loadingText: 'Getting Cars...'
   //   });
+
   //   axios.get('/api/predix-asset/connected_car')
   //   .then(res => {
   //     this.setState({connectedCars: res.data});
   //     return res.data;
   //   });
+
   //   this.setState({loadingText: 'Locating Cars...'});
+
   //   axios.get('/api/predix-asset/location')
   //   .then(locations => {
   //     this.setState({locations: locations.data})
-  //     this.combineResponses(this.state.connectedCars, this.state.locations)
   //   });
+
+  //   this.combineResponses(this.state.connectedCars, this.state.locations)
   // }
 
   combineResponses = (cars, locations) => {
+    console.log("CARS: ", cars);
+    console.log("CAR LOCATIONS ", locations);
+    if(cars.length === 0 || locations.length === 0) {
+      this.setState({error: true});
+    }
     cars.forEach(car => {
       let loc = locations.filter(location => car.location === location.uri);
       this.setState(state => {
@@ -116,7 +130,7 @@ class Dashboard1 extends React.Component {
   }
 
   render(){
-    const { connectedCars, loading, loadingText, selectedCar }  = this.state;
+    const { error, connectedCars, loading, loadingText, selectedCar }  = this.state;
     const actions = [
       <FlatButton
         label='Close'
@@ -128,13 +142,24 @@ class Dashboard1 extends React.Component {
       <div>
         {/* Context */}
         <div className='flex view-heading'>
-          <h1>Predix Example</h1>
+          <h1>Connected Cars Dashboard</h1>
         </div>
 
         <RaisedButton
           className='container'
           label='Get Data'
           onClick={() => this.getData()}/>
+
+        {error && 
+          <px-alert-message
+            visible
+            type='important'
+            action='dismiss'
+            message-title='Error!'
+            message='There was an error. Check the console.'
+            auto-dismiss='0'>
+          </px-alert-message>
+        }
 
         {loading && 
           <div className = 'spinner'>
@@ -145,11 +170,11 @@ class Dashboard1 extends React.Component {
           </div>
         }
 
-        {!loading && 
+        {!loading &&
           <div style={{margin: '1em', height: '70%'}}>
             <Map
               isMarkerShown
-              markers = {this.state.connectedCars}
+              markers = {connectedCars}
               googleMapURL='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
               selected = {this.setCurrentId}
             />

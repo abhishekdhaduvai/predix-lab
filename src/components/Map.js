@@ -19,8 +19,8 @@ class Map extends Component {
           <Marker 
             key={marker.uri}
             lat={Number(marker.latitude)} 
-            lng={Number(marker.longitude)} 
-            text={`C`}></Marker>
+            lng={Number(marker.longitude)}>
+          </Marker>
         ))}
       </GoogleMapReact>
     );

@@ -11,7 +11,7 @@ var express = require('express');
 var expressProxy = require('express-http-proxy');
 var HttpsProxyAgent = require('https-proxy-agent');
 var predixUaaClient = require('predix-uaa-client');
-var predixConfig = require('../predix-config');
+var predixConfig = require('./predix-config');
 var router = express.Router();
 var vcapServices = {};
 
@@ -100,7 +100,7 @@ function getEndpointAndZone(key, credentials) {
 		var urlObj = url.parse(credentials.query.uri);
 		out.serviceEndpoint = urlObj.host ? urlObj.protocol + '//' + urlObj.host : null;
 		out.zoneId = credentials.query['zone-http-header-value'];
-	}
+	} 
 	if (!out.serviceEndpoint) {
 		console.log('no proxy set for service: ' + key);
 	}
@@ -108,14 +108,12 @@ function getEndpointAndZone(key, credentials) {
 }
 
 var setProxyRoute = function(key, credentials) {
-	// console.log(JSON.stringify(credentials));
 	var routeOptions = getEndpointAndZone(key, credentials);
 	if (!routeOptions.serviceEndpoint) {
 		return;
 	}
 	console.log('setting proxy route for key: ' + key);
 	console.log('serviceEndpoint: ' + routeOptions.serviceEndpoint);
-	// console.log('zone id: ' + routeOptions.zoneId);
 	var decorator = buildDecorator(routeOptions.zoneId);
 
 	router.use('/' + key, expressProxy(routeOptions.serviceEndpoint, {
@@ -170,7 +168,6 @@ var setProxyRoutes = function() {
 	var vcapString = process.env.VCAP_SERVICES;
 	var serviceKeys = [];
 	vcapServices = vcapString ? JSON.parse(vcapString) : vcapServices;
-	console.log('vcaps: ' + JSON.stringify(vcapServices));
 
 	serviceKeys = Object.keys(vcapServices);
 	serviceKeys.forEach(function(key) {
